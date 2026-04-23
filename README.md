@@ -1,5 +1,10 @@
 # Terraform Basics
 
+> **Companion lab** for the Medium article [**Creating Your First Instance with Terraform**](https://medium.com/@rafael_muller/creating-your-first-instance-with-terraform-20334f3023ef).
+> One of my hands-on labs paired with technical articles — more on [Medium](https://medium.com/@rafael_muller).
+
+---
+
 This project uses Terraform to provision and manage resources on AWS. The main components of the project are as follows:
 
 1. `main.tf`: This file contains the main resource definitions for the project. It creates an AWS instance with the specified AMI and instance type. The instance is tagged with the name provided in the `vm_name` variable and a `Terraform` tag.
