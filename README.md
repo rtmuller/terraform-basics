@@ -1,22 +1,74 @@
 # Terraform Basics
 
 > **Companion lab** for the Medium article [**Creating Your First Instance with Terraform**](https://medium.com/@rafael_muller/creating-your-first-instance-with-terraform-20334f3023ef).
-> One of my hands-on labs paired with technical articles — more on [Medium](https://medium.com/@rafael_muller).
+> Part of my Terraform fundamentals series — more on [Medium](https://medium.com/@rafael_muller).
 
 ---
 
-This project uses Terraform to provision and manage resources on AWS. The main components of the project are as follows:
+## What you'll learn
 
-1. `main.tf`: This file contains the main resource definitions for the project. It creates an AWS instance with the specified AMI and instance type. The instance is tagged with the name provided in the `vm_name` variable and a `Terraform` tag.
+How to provision your first AWS EC2 instance with Terraform from scratch — understanding providers, input variables, local state, and the `plan` → `apply` → `destroy` resource lifecycle.
 
-2. `backend.tf`: This file configures the backend for Terraform. In this project, we are using the local backend.
+## Architecture
 
-3. `provider.tf`: This file configures the AWS provider for Terraform. It specifies the required version of the provider and sets the region and profile to be used.
+```
+┌──────────────────┐       ┌──────────────────────┐
+│   Terraform      │       │   AWS                │
+│   (local state)  │ ────► │   EC2 t3.small       │
+│                  │       │   region: us-east-1  │
+└──────────────────┘       └──────────────────────┘
+```
 
-4. `variables.tf`: This file defines the variables used in the project. It includes the `region` and `vm_name` variables, with default values of `us-east-1` and `vm01` respectively.
+## What's inside
 
-5. `.gitignore`: This file specifies the files and directories that should be ignored by Git. It includes local `.terraform` directories and `.tfstate` files.
+| File | Purpose |
+|------|---------|
+| `provider.tf` | Declares the AWS provider (v5.31.0) and region |
+| `variables.tf` | Defines `region` and `vm_name` input variables |
+| `main.tf` | Creates the EC2 instance resource with tags |
+| `backend.tf` | Configures local state backend |
 
-To use this project, you will need to have Terraform installed and an AWS account. You may need to adjust the `region` and `vm_name` variables to suit your needs.
+## Prerequisites
 
-Please note that this project is a basic example of using Terraform with AWS and may not be suitable for production use without further modifications.
+- Terraform ≥ 1.5
+- AWS CLI configured (`aws configure`) with a `default` profile
+- An AWS account (free tier covers this lab)
+
+## Quick start
+
+```bash
+# Initialize providers and backend
+terraform init
+
+# Preview what will be created
+terraform plan
+
+# Provision the instance
+terraform apply
+```
+
+After `apply`, a `t3.small` EC2 instance named `vm01` will exist in `us-east-1`, tagged with `Terraform = true`.
+
+## Cleanup
+
+```bash
+terraform destroy
+```
+
+Always destroy lab resources — EC2 instances accrue hourly charges.
+
+## Key concepts
+
+- **Providers** — how Terraform talks to cloud APIs (`hashicorp/aws`)
+- **Input variables** — parameterize your infrastructure (`var.region`, `var.vm_name`)
+- **State** — Terraform's source of truth for what exists (local backend here)
+- **Resource lifecycle** — `plan` previews, `apply` creates, `destroy` removes
+
+## Series
+
+Part of my Terraform fundamentals series:
+
+- **Next:** [Managing Environments with Terraform Workspaces](https://github.com/rtmuller/terraform-workspaces)
+- **Also in series:** [Using Multiple Providers](https://github.com/rtmuller/terraform-multi-providers)
+
+All articles on [Medium](https://medium.com/@rafael_muller).
